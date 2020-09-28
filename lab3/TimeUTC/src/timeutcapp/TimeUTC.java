@@ -1,6 +1,7 @@
 package timeutcapp;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 /** Класс, представляющий время в разных часовых поясах */
 public class TimeUTC {
@@ -51,11 +52,7 @@ public class TimeUTC {
         UTC_plus9_30 (9,30),
         UTC_plus10 (10,0),
         UTC_plus10_30 (10,30),
-        UTC_plus11 (11,0),
-        UTC_plus12 (12,0),
-        UTC_plus12_45 (12,45),
-        UTC_plus13 (13,0),
-        UTC_plus14 (14,0);
+        UTC_plus11 (11,0);
 
         /*---------- Свойства ------------*/
 
@@ -101,6 +98,7 @@ public class TimeUTC {
      * @param timezone часовой пояс
      */
     public TimeUTC (int hours, int minutes, int seconds, int milliseconds, TimeZones timezone) {
+
         checkTimeValidity(hours, minutes, seconds, milliseconds);
 
         this.hours = hours;
@@ -118,6 +116,7 @@ public class TimeUTC {
      * @param timezone часовой пояс
      */
     public TimeUTC (int hours, int minutes, int seconds, TimeZones timezone) {
+
         checkTimeValidity(hours, minutes, seconds, 0);
 
         this.hours = hours;
@@ -134,6 +133,7 @@ public class TimeUTC {
      * @param timezone часовой пояс
      */
     public TimeUTC (int hours, int minutes, TimeZones timezone) {
+
         checkTimeValidity(hours, minutes, 0, 0);
 
         this.hours = hours;
@@ -149,6 +149,7 @@ public class TimeUTC {
      * @param timezone часовой пояс
      */
     public TimeUTC (int hours, TimeZones timezone) {
+
         checkTimeValidity(hours, 0, 0, 0);
 
         this.hours = hours;
@@ -166,6 +167,7 @@ public class TimeUTC {
      * @param milliseconds миллисекунды
      */
     private void checkTimeValidity (int hours, int minutes, int seconds, int milliseconds) {
+
         if (hours < 0 || minutes < 0 || seconds < 0 || milliseconds < 0 ||
                 hours > 23 || minutes > 59 || seconds > 59 || milliseconds > 999) {
             throw new IllegalArgumentException("Invalid time value");
@@ -173,6 +175,23 @@ public class TimeUTC {
     }
 
     /* ---------------------------- Операции ---------------------------- */
+
+    /** Проверить два объекта на эквивалентность
+     *
+     * @param o объект, с которым происходит сравнение
+     * @return эквивалентность объектов
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TimeUTC timeUTC = (TimeUTC) o;
+        return hours == timeUTC.hours &&
+                minutes == timeUTC.minutes &&
+                seconds == timeUTC.seconds &&
+                milliseconds == timeUTC.milliseconds &&
+                timezone == timeUTC.timezone;
+    }
 
     /** Перевести объект в строковое представление
      *
@@ -206,7 +225,8 @@ public class TimeUTC {
         if (diffBetweenTZones.hours - diffBetweenTMoments.hours < diffBetweenTZones.hours ||
                 (isSyncHours && diffBetweenTZones.minutes - diffBetweenTMoments.minutes < diffBetweenTZones.minutes) ||
                 (isSyncHours && isSyncMinutes && seconds > other.seconds) ||
-                (isSyncHours && isSyncMinutes && seconds == other.seconds && milliseconds > other.milliseconds)) return 1;
+                (isSyncHours && isSyncMinutes && seconds == other.seconds &&
+                        milliseconds > other.milliseconds)) return 1;
 
         return -1;
     }
@@ -217,15 +237,16 @@ public class TimeUTC {
      * @return новое время со смененным часовым поясом
      */
     public TimeUTC changeTimeZone (TimeZones timezone) {
+
         int hoursNew = hours + timezone.getHoursOffset() - this.timezone.getHoursOffset();
         int minutesNew = minutes + timezone.getMinutesOffset() - this.timezone.getMinutesOffset();
 
         if (minutesNew < 0) {
-            minutesNew = 59 + minutesNew;
+            minutesNew += 60;
             hoursNew--;
         }
 
-        if (hoursNew < 0) hoursNew = 23 + hoursNew;
+        if (hoursNew < 0) hoursNew += 24;
 
         return new TimeUTC(hoursNew, minutesNew, seconds, milliseconds, timezone);
     }
@@ -236,12 +257,32 @@ public class TimeUTC {
      * @return новое время, представляющее модуль разницы между всеми компонентами от двух времен
      */
     public TimeUTC getDifference (TimeUTC other) {
+
         TimeUTC otherWithSameTimeZone = other.changeTimeZone(timezone);
 
-        return new TimeUTC(Math.abs(hours - otherWithSameTimeZone.hours),
-                Math.abs(minutes - otherWithSameTimeZone.minutes),
-                Math.abs(seconds - otherWithSameTimeZone.seconds),
-                Math.abs(milliseconds - otherWithSameTimeZone.milliseconds), timezone);
+        int hoursDiff = hours - otherWithSameTimeZone.hours;
+        int minutesDiff = minutes - otherWithSameTimeZone.minutes;
+        int secondsDiff = seconds - otherWithSameTimeZone.seconds;
+        int millisecondsDiff = milliseconds - otherWithSameTimeZone.milliseconds;
+
+        if (millisecondsDiff < 0 && secondsDiff > 0) {
+            millisecondsDiff += 1000;
+        }
+
+        if (secondsDiff < 0 && minutesDiff > 0) {
+            secondsDiff += 60;
+            minutesDiff--;
+        }
+
+        if (minutesDiff < 0 && hoursDiff > 0) {
+            minutesDiff += 60;
+            hoursDiff--;
+        }
+
+        return new TimeUTC(Math.abs(hoursDiff),
+                Math.abs(minutesDiff),
+                Math.abs(secondsDiff),
+                Math.abs(millisecondsDiff), timezone);
     }
 
     /** Получить текущее время в поясе UTC
@@ -249,6 +290,7 @@ public class TimeUTC {
      * @return текущее время в поясе UTC
      */
     private TimeUTC getCurrentUTCTime () {
+
         Calendar now = Calendar.getInstance();
         return new TimeUTC(now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE), now.get(Calendar.SECOND),
@@ -306,7 +348,14 @@ public class TimeUTC {
      * @return разница во времени между двумя часовыми поясами
      */
     public static TimeUTC getDifference (TimeZones timezone1, TimeZones timezone2) {
-        return new TimeUTC(timezone1.getHoursOffset() - timezone2.getHoursOffset(),
-                timezone1.getMinutesOffset() - timezone2.getMinutesOffset(), TimeZones.UTC);
+
+        int hoursDiff = timezone1.getHoursOffset() - timezone2.getHoursOffset();
+        int minutesDiff = timezone1.getMinutesOffset() - timezone2.getMinutesOffset();
+        if (minutesDiff < 0 && hoursDiff > 0) {
+            minutesDiff += 60;
+            hoursDiff--;
+        }
+
+        return new TimeUTC(Math.abs(hoursDiff), Math.abs(minutesDiff), TimeZones.UTC);
     }
 }
