@@ -38,6 +38,11 @@ public class ReducedFraction {
         this.numerator = numerator;
         this.denominator = 1;
     }
+
+    /* --------------------- Геттеры ---------------------- */
+
+    public int getNumerator () { return numerator; }
+    public int getDenominator () { return denominator; }
   
     /* --------------------- Арифметические операции ---------------------- */
     
@@ -46,7 +51,7 @@ public class ReducedFraction {
      * @param other слагаемое
      * @return сумма
     */
-    public ReducedFraction add(ReducedFraction other) {
+    public ReducedFraction sum(ReducedFraction other) {
         return new ReducedFraction(numerator * other.denominator + other.numerator * denominator,
                 denominator * other.denominator);
     }

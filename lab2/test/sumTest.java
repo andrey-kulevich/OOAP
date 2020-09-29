@@ -2,15 +2,13 @@ import reducedfractionapp.ReducedFraction;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
-public class addTest {
+public class sumTest {
     /** Две различные дроби*/
     @Test
     void twoDifferentFractions() {
         ReducedFraction f1 = new ReducedFraction(1, 2);
         ReducedFraction f2 = new ReducedFraction(6, 8);
-        ReducedFraction result = f1.add(f2);
+        ReducedFraction result = f1.sum(f2);
 
         Assert.assertEquals(result, new ReducedFraction(5, 4));
     }
@@ -20,7 +18,7 @@ public class addTest {
     void twoEqualFractions() {
         ReducedFraction f1 = new ReducedFraction(1, 2);
         ReducedFraction f2 = new ReducedFraction(1, 2);
-        ReducedFraction result = f1.add(f2);
+        ReducedFraction result = f1.sum(f2);
 
         Assert.assertEquals(result, new ReducedFraction(1, 1));
     }
@@ -30,7 +28,7 @@ public class addTest {
     void resultOfSummIsZero() {
         ReducedFraction f1 = new ReducedFraction(1, 2);
         ReducedFraction f2 = new ReducedFraction(-1, 2);
-        ReducedFraction result = f1.add(f2);
+        ReducedFraction result = f1.sum(f2);
 
         Assert.assertEquals(result, new ReducedFraction(0, 2));
     }
@@ -40,9 +38,9 @@ public class addTest {
     void oneFractionIsZero() {
         ReducedFraction f1 = new ReducedFraction(0, 2);
         ReducedFraction f2 = new ReducedFraction(1, 2);
-        ReducedFraction result = f1.add(f2);
+        ReducedFraction result = f1.sum(f2);
 
-        Assert.assertTrue(result.equals(new ReducedFraction(1, 2)));
+        Assert.assertEquals(result, new ReducedFraction(1, 2));
     }
 
     /** Обе дроби равны нулю*/
@@ -50,8 +48,8 @@ public class addTest {
     void bothFractionsIsZero() {
         ReducedFraction f1 = new ReducedFraction(0, 2);
         ReducedFraction f2 = new ReducedFraction(0, 2);
-        ReducedFraction result = f1.add(f2);
+        ReducedFraction result = f1.sum(f2);
 
-        Assert.assertTrue(result.equals(new ReducedFraction(0, 2)));
+        Assert.assertEquals(result, new ReducedFraction(0, 2));
     }
 }

@@ -1,5 +1,4 @@
 package test;
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import timeutcapp.TimeUTC;
@@ -83,6 +82,15 @@ public class getDifference_static_test {
     void bothHasOffsetByMinutesAndFirstGreaterByHours() {
         TimeUTC diff = TimeUTC.getDifference(TimeUTC.TimeZones.UTC_plus9_30, TimeUTC.TimeZones.UTC_plus8_45);
         TimeUTC expDiff = new TimeUTC(0, 45, TimeUTC.TimeZones.UTC);
+
+        Assert.assertEquals(expDiff, diff);
+    }
+
+    /** Максимальная разница по времени */
+    @Test
+    void maximumDifference() {
+        TimeUTC diff = TimeUTC.getDifference(TimeUTC.TimeZones.UTC_minus12, TimeUTC.TimeZones.UTC_plus11);
+        TimeUTC expDiff = new TimeUTC(23, 0, TimeUTC.TimeZones.UTC);
 
         Assert.assertEquals(expDiff, diff);
     }

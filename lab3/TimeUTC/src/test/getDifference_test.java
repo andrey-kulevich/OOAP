@@ -1,5 +1,4 @@
 package test;
-import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import timeutcapp.TimeUTC;
@@ -145,6 +144,17 @@ public class getDifference_test {
         TimeUTC time2 = new TimeUTC(12, 10, 12, 12, TimeUTC.TimeZones.UTC_plus1);
         TimeUTC diff = time1.getDifference(time2);
         TimeUTC expDiff = new TimeUTC(0,57,0,0, TimeUTC.TimeZones.UTC);
+
+        Assert.assertEquals(expDiff, diff);
+    }
+
+    /** Разные часовые пояса, первое отстает от второго */
+    @Test
+    void blabla() {
+        TimeUTC time1 = new TimeUTC(0, 0, 0, 0, TimeUTC.TimeZones.UTC);
+        TimeUTC time2 = new TimeUTC(20, 0, 0, 0, TimeUTC.TimeZones.UTC);
+        TimeUTC diff = time1.getDifference(time2);
+        TimeUTC expDiff = new TimeUTC(4,0,0,0, TimeUTC.TimeZones.UTC);
 
         Assert.assertEquals(expDiff, diff);
     }

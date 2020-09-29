@@ -20,35 +20,35 @@ public class ReducedFractionConstructorTest {
     @Test
     void NoReducedFraction() {
         ReducedFraction f = new ReducedFraction(3, 9);
-        ReducedFraction exp_f = new ReducedFraction(1, 3);
 
-        Assert.assertEquals(f, exp_f);
+        Assert.assertEquals(f.getNumerator(), 1);
+        Assert.assertEquals(f.getDenominator(), 3);
     }
 
     /** Передана дробь с отрицательным числителем и знаменателем*/
     @Test
     void fractionWithNegativeNumeratorAndDenominator() {
         ReducedFraction f = new ReducedFraction(-4, -7);
-        ReducedFraction exp_f = new ReducedFraction(4, 7);
 
-        Assert.assertEquals(f, exp_f);
+        Assert.assertEquals(f.getNumerator(), 4);
+        Assert.assertEquals(f.getDenominator(), 7);
     }
 
     /** Передана дробь с отрицательным знаменателем*/
     @Test
     void fractionWithNegativeDenominator() {
         ReducedFraction f = new ReducedFraction(4, -7);
-        ReducedFraction exp_f = new ReducedFraction(-4, 7);
 
-        Assert.assertEquals(f, exp_f);
+        Assert.assertEquals(f.getNumerator(), -4);
+        Assert.assertEquals(f.getDenominator(), 7);
     }
 
     /** Передана дробь, являющаяся целым числом*/
     @Test
     void IntegerFraction() {
         ReducedFraction f = new ReducedFraction(2);
-        ReducedFraction exp_f = new ReducedFraction(2, 1);
 
-        Assert.assertEquals(f, exp_f);
+        Assert.assertEquals(f.getNumerator(), 2);
+        Assert.assertEquals(f.getDenominator(), 1);
     }
 }

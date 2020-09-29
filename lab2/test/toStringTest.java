@@ -2,8 +2,6 @@ import reducedfractionapp.ReducedFraction;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
 public class toStringTest {
     /** Обычная дробь*/
     @Test

@@ -2,6 +2,7 @@ package timeutcapp;
 
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.TimeZone;
 
 /** Класс, представляющий время в разных часовых поясах */
 public class TimeUTC {
@@ -168,10 +169,10 @@ public class TimeUTC {
      */
     private void checkTimeValidity (int hours, int minutes, int seconds, int milliseconds) {
 
-        if (hours < 0 || minutes < 0 || seconds < 0 || milliseconds < 0 ||
-                hours > 23 || minutes > 59 || seconds > 59 || milliseconds > 999) {
-            throw new IllegalArgumentException("Invalid time value");
-        }
+        if (hours < 0 || hours > 23 ) throw new IllegalArgumentException("Invalid hours value");
+        if (minutes < 0|| minutes > 59) throw new IllegalArgumentException("Invalid minutes value");
+        if (seconds < 0 || seconds > 59) throw new IllegalArgumentException("Invalid seconds value");
+        if (milliseconds < 0 || milliseconds > 999) throw new IllegalArgumentException("Invalid milliseconds value");
     }
 
     /* ---------------------------- Операции ---------------------------- */
@@ -199,8 +200,16 @@ public class TimeUTC {
      */
     @Override
     public String toString() {
+
+        String minutesOffset = "";
+        if (timezone.getMinutesOffset() != 0) minutesOffset += ":" + Math.abs(timezone.getMinutesOffset());
+
+        String hoursOffset;
+        if (timezone.getHoursOffset() > 0) hoursOffset = "+" + timezone.getHoursOffset();
+        else hoursOffset = String.valueOf(timezone.getHoursOffset());
+
         return hours + ":" + minutes + ":" + seconds + ":" + milliseconds
-                + " UTC" + timezone.getHoursOffset() + ":" + Math.abs(timezone.getMinutesOffset());
+                + " UTC" + hoursOffset + minutesOffset;
     }
 
     /** Сравнить два момента времени из разных часовых поясов
@@ -210,7 +219,7 @@ public class TimeUTC {
      */
     public int compare (TimeUTC other) {
 
-        TimeUTC otherWithSameTimeZone = changeTimeZone(timezone);
+        TimeUTC otherWithSameTimeZone = other.changeTimeZone(timezone);
         if (hours == otherWithSameTimeZone.hours &&
             minutes == otherWithSameTimeZone.minutes &&
             seconds == otherWithSameTimeZone.seconds &&
@@ -219,11 +228,13 @@ public class TimeUTC {
         TimeUTC diffBetweenTZones = TimeUTC.getDifference(timezone, other.timezone);
         TimeUTC diffBetweenTMoments = getDifference(other);
 
-        boolean isSyncHours = diffBetweenTZones.hours - diffBetweenTMoments.hours == diffBetweenTZones.hours;
-        boolean isSyncMinutes = diffBetweenTZones.minutes - diffBetweenTMoments.minutes == diffBetweenTZones.minutes;
+        boolean isSyncHours = diffBetweenTZones.hours == diffBetweenTMoments.hours;
+        boolean isSyncMinutes = diffBetweenTZones.minutes == diffBetweenTMoments.minutes;
 
-        if (diffBetweenTZones.hours - diffBetweenTMoments.hours < diffBetweenTZones.hours ||
-                (isSyncHours && diffBetweenTZones.minutes - diffBetweenTMoments.minutes < diffBetweenTZones.minutes) ||
+        if (diffBetweenTZones.hours - diffBetweenTMoments.hours > 0 ||
+                (diffBetweenTZones.hours == 0 && hours > other.hours) ||
+                (isSyncHours && diffBetweenTZones.minutes - diffBetweenTMoments.minutes > 0) ||
+                (diffBetweenTZones.hours == 0 && diffBetweenTZones.minutes == 0 && minutes > other.minutes) ||
                 (isSyncHours && isSyncMinutes && seconds > other.seconds) ||
                 (isSyncHours && isSyncMinutes && seconds == other.seconds &&
                         milliseconds > other.milliseconds)) return 1;
@@ -246,7 +257,13 @@ public class TimeUTC {
             hoursNew--;
         }
 
+        if (minutesNew > 59) {
+            minutesNew -= 60;
+            hoursNew++;
+        }
+
         if (hoursNew < 0) hoursNew += 24;
+        if (hoursNew > 23) hoursNew -= 24;
 
         return new TimeUTC(hoursNew, minutesNew, seconds, milliseconds, timezone);
     }
@@ -279,6 +296,9 @@ public class TimeUTC {
             hoursDiff--;
         }
 
+        if (hoursDiff < -12) hoursDiff += 24;
+        if (hoursDiff > 12) hoursDiff -= 24;
+
         return new TimeUTC(Math.abs(hoursDiff),
                 Math.abs(minutesDiff),
                 Math.abs(secondsDiff),
@@ -289,9 +309,10 @@ public class TimeUTC {
      *
      * @return текущее время в поясе UTC
      */
-    private TimeUTC getCurrentUTCTime () {
+    private static TimeUTC getCurrentUTCTime () {
 
         Calendar now = Calendar.getInstance();
+        now.setTimeZone(TimeZone.getTimeZone("UTC"));
         return new TimeUTC(now.get(Calendar.HOUR_OF_DAY),
                 now.get(Calendar.MINUTE), now.get(Calendar.SECOND),
                 now.get(Calendar.MILLISECOND), TimeZones.UTC);
@@ -303,7 +324,7 @@ public class TimeUTC {
      *
      * @return текущее время в Калининграде
      */
-    public TimeUTC getKaliningradTime () {
+    public static TimeUTC getKaliningradTime () {
         return getCurrentUTCTime().changeTimeZone(TimeZones.UTC_plus2);
     }
 
@@ -311,7 +332,7 @@ public class TimeUTC {
      *
      * @return текущее время в Москве
      */
-    public TimeUTC getMoscowTime () {
+    public static TimeUTC getMoscowTime () {
         return getCurrentUTCTime().changeTimeZone(TimeZones.UTC_plus3);
     }
 
@@ -319,7 +340,7 @@ public class TimeUTC {
      *
      * @return текущее время в Казани
      */
-    public TimeUTC getKazanTime () {
+    public static TimeUTC getKazanTime () {
         return getMoscowTime();
     }
 
@@ -327,7 +348,7 @@ public class TimeUTC {
      *
      * @return текущее время в Екатеринбурге
      */
-    public TimeUTC getYekaterinburgTime () {
+    public static TimeUTC getYekaterinburgTime () {
         return getCurrentUTCTime().changeTimeZone(TimeZones.UTC_plus5);
     }
 
@@ -335,7 +356,7 @@ public class TimeUTC {
      *
      * @return текущее время во Владивостоке
      */
-    public TimeUTC getVladivostokTime () {
+    public static TimeUTC getVladivostokTime () {
         return getCurrentUTCTime().changeTimeZone(TimeZones.UTC_plus10);
     }
 
