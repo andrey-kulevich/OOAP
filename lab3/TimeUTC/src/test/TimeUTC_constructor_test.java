@@ -69,26 +69,35 @@ public class TimeUTC_constructor_test {
     @Test
     void millisecondsNotSpecified() {
         TimeUTC time = new TimeUTC(12, 12, 12, TimeUTC.TimeZones.UTC);
-        TimeUTC expTime = new TimeUTC(12,12,12,0, TimeUTC.TimeZones.UTC);
 
-        Assert.assertEquals(expTime, time);
+        Assert.assertEquals(12, time.getHours());
+        Assert.assertEquals(12, time.getMinutes());
+        Assert.assertEquals(12, time.getSeconds());
+        Assert.assertEquals(0, time.getMilliseconds());
+        Assert.assertEquals(TimeUTC.TimeZones.UTC, time.getTimezone());
     }
 
     /** Не указаны секунды */
     @Test
     void secondsNotSpecified() {
         TimeUTC time = new TimeUTC(12, 12, TimeUTC.TimeZones.UTC);
-        TimeUTC expTime = new TimeUTC(12,12,0,0, TimeUTC.TimeZones.UTC);
 
-        Assert.assertEquals(expTime, time);
+        Assert.assertEquals(12, time.getHours());
+        Assert.assertEquals(12, time.getMinutes());
+        Assert.assertEquals(0, time.getSeconds());
+        Assert.assertEquals(0, time.getMilliseconds());
+        Assert.assertEquals(TimeUTC.TimeZones.UTC, time.getTimezone());
     }
 
     /** Не указаны минуты */
     @Test
     void minutesNotSpecified() {
         TimeUTC time = new TimeUTC(12, TimeUTC.TimeZones.UTC);
-        TimeUTC expTime = new TimeUTC(12,0,0,0, TimeUTC.TimeZones.UTC);
 
-        Assert.assertEquals(expTime, time);
+        Assert.assertEquals(12, time.getHours());
+        Assert.assertEquals(0, time.getMinutes());
+        Assert.assertEquals(0, time.getSeconds());
+        Assert.assertEquals(0, time.getMilliseconds());
+        Assert.assertEquals(TimeUTC.TimeZones.UTC, time.getTimezone());
     }
 }

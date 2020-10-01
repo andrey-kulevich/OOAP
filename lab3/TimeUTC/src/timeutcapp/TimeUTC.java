@@ -1,7 +1,6 @@
 package timeutcapp;
 
 import java.util.Calendar;
-import java.util.Objects;
 import java.util.TimeZone;
 
 /** Класс, представляющий время в разных часовых поясах */
@@ -174,6 +173,38 @@ public class TimeUTC {
         if (seconds < 0 || seconds > 59) throw new IllegalArgumentException("Invalid seconds value");
         if (milliseconds < 0 || milliseconds > 999) throw new IllegalArgumentException("Invalid milliseconds value");
     }
+
+    /* ---------------------------- Геттеры ---------------------------- */
+
+    /** Получить количество часов
+     *
+     * @return кол-во часов
+     */
+    public int getHours() { return hours; }
+
+    /** Получить количество минут
+     *
+     * @return кол-во минут
+     */
+    public int getMinutes() { return minutes; }
+
+    /** Получить количество секунд
+     *
+     * @return кол-во секунд
+     */
+    public int getSeconds() { return seconds; }
+
+    /** Получить количество миллисекунд
+     *
+     * @return кол-во миллисекунд
+     */
+    public int getMilliseconds() { return milliseconds; }
+
+    /** Получить часовой пояс
+     *
+     * @return часовой пояс для данного времени
+     */
+    public TimeZones getTimezone() { return timezone; }
 
     /* ---------------------------- Операции ---------------------------- */
 
