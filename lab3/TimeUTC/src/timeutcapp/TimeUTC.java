@@ -315,6 +315,7 @@ public class TimeUTC {
 
         if (millisecondsDiff < 0 && secondsDiff > 0) {
             millisecondsDiff += 1000;
+            secondsDiff--;
         }
 
         if (secondsDiff < 0 && minutesDiff > 0) {

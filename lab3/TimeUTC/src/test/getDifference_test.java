@@ -148,13 +148,35 @@ public class getDifference_test {
         Assert.assertEquals(expDiff, diff);
     }
 
-    /** Разные часовые пояса, первое отстает от второго */
+//    /** Разные часовые пояса, первое отстает от второго */
+//    @Test
+//    void diffTimeZonesAndFirstSlower() {
+//        TimeUTC time1 = new TimeUTC(0, 0, 0, 0, TimeUTC.TimeZones.UTC);
+//        TimeUTC time2 = new TimeUTC(20, 0, 0, 0, TimeUTC.TimeZones.UTC);
+//        TimeUTC diff = time1.getDifference(time2);
+//        TimeUTC expDiff = new TimeUTC(4,0,0,0, TimeUTC.TimeZones.UTC);
+//
+//        Assert.assertEquals(expDiff, diff);
+//    }
+
+    /** У первого миллисекунд меньше, чем у второго */
     @Test
-    void blabla() {
-        TimeUTC time1 = new TimeUTC(0, 0, 0, 0, TimeUTC.TimeZones.UTC);
-        TimeUTC time2 = new TimeUTC(20, 0, 0, 0, TimeUTC.TimeZones.UTC);
+    void firstHasLessMilliseconds() {
+        TimeUTC time1 = new TimeUTC(12, 12, 12, 12, TimeUTC.TimeZones.UTC);
+        TimeUTC time2 = new TimeUTC(12, 12, 11, 13, TimeUTC.TimeZones.UTC);
         TimeUTC diff = time1.getDifference(time2);
-        TimeUTC expDiff = new TimeUTC(4,0,0,0, TimeUTC.TimeZones.UTC);
+        TimeUTC expDiff = new TimeUTC(0,0,0,999, TimeUTC.TimeZones.UTC);
+
+        Assert.assertEquals(expDiff, diff);
+    }
+
+    /** У первого секунд меньше, чем у второго */
+    @Test
+    void firstHasLessSeconds() {
+        TimeUTC time1 = new TimeUTC(12, 12, 12, 12, TimeUTC.TimeZones.UTC);
+        TimeUTC time2 = new TimeUTC(12, 11, 13, 12, TimeUTC.TimeZones.UTC);
+        TimeUTC diff = time1.getDifference(time2);
+        TimeUTC expDiff = new TimeUTC(0,0,59,0, TimeUTC.TimeZones.UTC);
 
         Assert.assertEquals(expDiff, diff);
     }

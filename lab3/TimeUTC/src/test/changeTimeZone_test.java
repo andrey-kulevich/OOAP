@@ -104,4 +104,14 @@ public class changeTimeZone_test {
         TimeUTC expTime = new TimeUTC(22, 12, 12, 12, TimeUTC.TimeZones.UTC_plus11);
         Assert.assertEquals(expTime, newTime);
     }
+
+    /** Минут стало больше чем 60 */
+    @Test
+    void minutesOverflow() {
+
+        TimeUTC time = new TimeUTC(12, 50, 12, 12, TimeUTC.TimeZones.UTC_plus3);
+        TimeUTC newTime = time.changeTimeZone(TimeUTC.TimeZones.UTC_plus3_30);
+        TimeUTC expTime = new TimeUTC(13, 20, 12, 12, TimeUTC.TimeZones.UTC_plus3_30);
+        Assert.assertEquals(expTime, newTime);
+    }
 }
