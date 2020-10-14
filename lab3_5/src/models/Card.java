@@ -1,14 +1,28 @@
 package models;
 
 public class Card {
-    private final int number;
 
-    public Card(int number) {
-        if (number >= 0) this.number = number;
-        else throw new IllegalArgumentException("Номер каточки не может быть отрицательным");
+    /*------------ Свойства -------------*/
+
+    private static int freeNumber = 1;
+    private final int number;
+    private boolean isActive;
+
+    /*------------ Конструктор -------------*/
+
+    public Card() {
+        isActive = true;
+        number = freeNumber;
+        freeNumber++;
     }
+
+    /*------------ Геттеры -------------*/
 
     public int getNumber() {
         return number;
     }
+
+    /*------------ Сеттеры -------------*/
+
+    public void setActive(boolean active) { isActive = active; }
 }
