@@ -1,28 +1,35 @@
 package models;
 
+/** Карточка работника */
 public class Card {
 
     /*------------ Свойства -------------*/
-
+    /** Свободный номер карточки */
     private static int freeNumber = 1;
+    /** Номер карточки */
     private final int number;
-    private boolean isActive;
 
     /*------------ Конструктор -------------*/
 
+    /** Конструктор карточки работника */
     public Card() {
-        isActive = true;
         number = freeNumber;
         freeNumber++;
     }
 
     /*------------ Геттеры -------------*/
 
-    public int getNumber() {
-        return number;
-    }
+    /** Получить номер карточки
+     *
+     * @return номер карточки
+     */
+    public int getNumber() { return number; }
 
     /*------------ Сеттеры -------------*/
 
-    public void setActive(boolean active) { isActive = active; }
+    /** Установить свободный номер карточки
+     *
+     * @param freeNumber свободный номер
+     */
+    public static void setFreeNumber(int freeNumber) { Card.freeNumber = freeNumber; }
 }
