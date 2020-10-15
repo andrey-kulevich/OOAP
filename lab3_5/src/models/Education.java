@@ -23,6 +23,8 @@ public class Education {
      * @param degree ступень образования
      */
     public Education (Specialty specialty, Degree degree) {
+        //!
+
         this.specialty = specialty;
         this.degree = degree;
     }

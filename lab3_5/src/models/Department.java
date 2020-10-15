@@ -9,7 +9,7 @@ public class Department {
     /** Название отдела */
     private String name;
     /** Список сотрудников */
-    private final List<Employee> employees = new ArrayList<Employee>();
+    private final HashSet<Employee> employees = new HashSet<>();
 
     /*------------ Конструктор -------------*/
 
@@ -33,7 +33,7 @@ public class Department {
      *
      * @return список сотрудников
      */
-    public List<Employee> getEmployees() { return new ArrayList<Employee>(employees); }
+    public HashSet<Employee> getEmployees() { return new HashSet<Employee>(employees); }
 
     /*------------ Сеттеры -------------*/
 
@@ -51,14 +51,11 @@ public class Department {
      * @return успешность добавления (false, если работник уже есть в этом отделе)
      */
     public boolean addEmployee(Employee employee) {
+        if (employee == null) throw new NullPointerException();
 
-        if (!employees.contains(employee)) {
-            employees.add(employee);
-            employee.setDepartment(this);
-            return true;
-        } else {
-            return false;
-        }
+        boolean isAdded = employees.add(employee);
+        if (isAdded) employee.setDepartment(this);
+        return isAdded;
     }
 
     /** Убрать работника из отдела
@@ -66,6 +63,7 @@ public class Department {
      * @param employee работник
      */
     public void removeEmployee(Employee employee) {
+
         if (employees.remove(employee)) employee.setDepartment(null);
     }
 }

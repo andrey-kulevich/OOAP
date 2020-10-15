@@ -106,6 +106,7 @@ public class Employee {
     public boolean admitTo(Department department) {
         if (department == null) throw new NullPointerException();
 
+        if (this.department != null) return false;
         boolean isAdmitted = department.addEmployee(this);
 
         if (isAdmitted) actionListener.actionPerformed(FIO + " принят в отдел " + department.getName());
@@ -114,7 +115,6 @@ public class Employee {
 
     /** Уволить работника */
     public void fireFromCompany() {
-        idCard.setActive(false);
         department.removeEmployee(this);
         actionListener.actionPerformed(FIO + " уволен");
     }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 public class Computer {
 
     /*------------ Свойства -------------*/
+
+    private static freeNum; //
     /** Инвентарный номер */
     private final int pcId;
     /** Работник, за которым закреплен этот компьютер */
