@@ -14,6 +14,8 @@ public class Employee {
     private Department department;
     /** слушатель событий */
     private EmployeeListener actionListener;
+    /** компьютер работника */
+    private Computer computer;
 
     /*------------ Конструктор -------------*/
 
@@ -29,7 +31,6 @@ public class Employee {
         this.FIO = FIO;
         idCard = new Card();
         this.education = education;
-        this.department = department;
         this.admitTo(department);
     }
 
@@ -59,6 +60,11 @@ public class Employee {
      */
     public String getFIO() { return FIO; }
 
+    /** Получить компьютер работника
+     *
+     * @return компьютер работника
+     */
+    public Computer getComputer() { return computer; }
 
     /*------------ Сеттеры -------------*/
 
@@ -73,8 +79,9 @@ public class Employee {
                 (this.education.getSpecialty() == education.getSpecialty() &&
                         Education.compareDegrees(this.education.getDegree(), education.getDegree()) <= 0)) {
             this.education = education;
-            actionListener.actionPerformed(FIO + " получил степень "
-                    + education.getDegree() + " по специальности " + education.getSpecialty());
+            if (actionListener != null)
+                actionListener.actionPerformed(FIO + " получил степень "
+                        + education.getDegree() + " по специальности " + education.getSpecialty());
         } else
             throw new IllegalArgumentException("Степень по специальности не может быть понижена");
     }
@@ -96,6 +103,12 @@ public class Employee {
         this.department = department;
     }
 
+    /** Задать компьютер для работника
+     *
+     * @param computer компьютер
+     */
+    protected void setComputer(Computer computer) { this.computer = computer; }
+
     /*------------ Операции -------------*/
 
     /** Принять работника в отдел
@@ -109,14 +122,15 @@ public class Employee {
         if (this.department != null) return false;
         boolean isAdmitted = department.addEmployee(this);
 
-        if (isAdmitted) actionListener.actionPerformed(FIO + " принят в отдел " + department.getName());
+        if (isAdmitted && actionListener != null)
+            actionListener.actionPerformed(FIO + " принят в отдел " + department.getName());
         return isAdmitted;
     }
 
     /** Уволить работника */
     public void fireFromCompany() {
         department.removeEmployee(this);
-        actionListener.actionPerformed(FIO + " уволен");
+        if (actionListener != null) actionListener.actionPerformed(FIO + " уволен");
     }
 
     /** Перевести работника в другой отдел
@@ -130,7 +144,8 @@ public class Employee {
         this.department.removeEmployee(this);
         boolean isAdmitted = department.addEmployee(this);
 
-        if (isAdmitted) actionListener.actionPerformed(FIO + " переведен в отдел " + department.getName());
+        if (isAdmitted && actionListener != null)
+            actionListener.actionPerformed(FIO + " переведен в отдел " + department.getName());
         return isAdmitted;
     }
 

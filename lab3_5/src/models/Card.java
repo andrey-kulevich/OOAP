@@ -5,7 +5,7 @@ public class Card {
 
     /*------------ Свойства -------------*/
     /** Свободный номер карточки */
-    private static int freeNumber = 1;
+    private static int freeNumber = 0;
     /** Номер карточки */
     private final int number;
 
@@ -31,5 +31,8 @@ public class Card {
      *
      * @param freeNumber свободный номер
      */
-    public static void setFreeNumber(int freeNumber) { Card.freeNumber = freeNumber; }
+    public static void setFreeNumber(int freeNumber) {
+        if (freeNumber >= 0) Card.freeNumber = freeNumber;
+        else throw new IllegalArgumentException("Номер карточки не может быть отрицательным");
+    }
 }

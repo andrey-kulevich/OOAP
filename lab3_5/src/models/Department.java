@@ -18,6 +18,7 @@ public class Department {
      * @param name название отдела
      */
     public Department(String name) {
+        if (name == null) throw new NullPointerException();
         this.name = name;
     }
 
@@ -41,7 +42,10 @@ public class Department {
      *
      * @param name новое название
      */
-    public void setName(String name) { this.name = name; }
+    public void setName(String name) {
+        if (name == null) throw new NullPointerException();
+        this.name = name;
+    }
 
     /*------------ Операции -------------*/
 
@@ -50,7 +54,7 @@ public class Department {
      * @param employee новый работник
      * @return успешность добавления (false, если работник уже есть в этом отделе)
      */
-    public boolean addEmployee(Employee employee) {
+    protected boolean addEmployee(Employee employee) {
         if (employee == null) throw new NullPointerException();
 
         boolean isAdded = employees.add(employee);
@@ -62,8 +66,8 @@ public class Department {
      *
      * @param employee работник
      */
-    public void removeEmployee(Employee employee) {
-
+    protected void removeEmployee(Employee employee) {
+        if (employee == null) throw new NullPointerException();
         if (employees.remove(employee)) employee.setDepartment(null);
     }
 }

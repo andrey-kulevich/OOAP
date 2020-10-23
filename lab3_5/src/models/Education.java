@@ -23,7 +23,7 @@ public class Education {
      * @param degree ступень образования
      */
     public Education (Specialty specialty, Degree degree) {
-        //!
+        if (specialty == null || degree == null) throw new NullPointerException();
 
         this.specialty = specialty;
         this.degree = degree;
@@ -52,6 +52,7 @@ public class Education {
      * @return 1, если первая ступень выше второй, -1, если ниже, 0, если они равны
      */
     public static int compareDegrees(Degree degree1, Degree degree2) {
+        if (degree1 == null || degree2 == null) throw new NullPointerException();
         return Integer.compare(degree1.ordinal(), degree2.ordinal());
     }
 }

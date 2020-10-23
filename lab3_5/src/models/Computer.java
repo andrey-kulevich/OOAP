@@ -7,8 +7,8 @@ import java.util.ArrayList;
 public class Computer {
 
     /*------------ Свойства -------------*/
-
-    private static freeNum; //
+    /** Свободный инвентарный номер */
+    private static int freeId = 0;
     /** Инвентарный номер */
     private final int pcId;
     /** Работник, за которым закреплен этот компьютер */
@@ -24,11 +24,10 @@ public class Computer {
 
     /** Конструктор компьютера
      *
-     * @param pcId инвентарный номер
      */
-    public Computer (int pcId) {
-        if (pcId >= 0) this.pcId = pcId;
-        else throw new IllegalArgumentException("Инвентарный номер не может быть отрицательным");
+    public Computer () {
+        pcId = freeId;
+        freeId++;
         isStarted = false;
         log = new ArrayList<String>();
     }
@@ -53,13 +52,38 @@ public class Computer {
      */
     public String getLastReport () { return log.get(log.size() - 1); }
 
+    /** Получить работника, за которым закреплен компьютер
+     *
+     * @return работник
+     */
+    public Employee getOwner() { return owner; }
+
     /*------------ Сеттеры -------------*/
 
     /** Закрепить компьютер за работником
      *
      * @param owner работник
      */
-    public void setOwner(Employee owner) { this.owner = owner; }
+    public void setOwner(Employee owner) {
+        if (this.owner != null) {
+            this.owner.setComputer(null);
+        }
+        if (owner != null && owner.getComputer() != null) {
+            owner.getComputer().setOwner(null);
+            owner.setComputer(null);
+        }
+        this.owner = owner;
+        if (this.owner != null) owner.setComputer(this);
+    }
+
+    /** Установить свободный инвентарный номер
+     *
+     * @param freeNumber свободный инвентарный номер
+     */
+    public static void setFreeNumber(int freeNumber) {
+        if (freeNumber >= 0) Computer.freeId = freeNumber;
+        else throw new IllegalArgumentException("Инвентарный номер не может быть отрицательным");
+    }
 
     /*------------ Операции -------------*/
 
