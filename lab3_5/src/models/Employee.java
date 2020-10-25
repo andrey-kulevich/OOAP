@@ -13,7 +13,7 @@ public class Employee {
     /** отдел */
     private Department department;
     /** слушатель событий */
-    private EmployeeListener actionListener;
+    private Management actionListener;
     /** компьютер работника */
     private Computer computer;
 
@@ -31,6 +31,24 @@ public class Employee {
         this.FIO = FIO;
         idCard = new Card();
         this.education = education;
+        this.admitTo(department);
+    }
+
+    /** Констуктор класса
+     *
+     * @param FIO ФИО работника
+     * @param education образование
+     * @param department отдел
+     * @param actionListener слушатель событий работника
+     */
+    public Employee(String FIO, Education education, Department department, Management actionListener) {
+        if (FIO == null || education == null || department == null || actionListener == null)
+            throw new NullPointerException();
+
+        this.FIO = FIO;
+        idCard = new Card();
+        this.education = education;
+        this.actionListener = actionListener;
         this.admitTo(department);
     }
 
@@ -66,6 +84,12 @@ public class Employee {
      */
     public Computer getComputer() { return computer; }
 
+    /** Получить слушателя событий для сотрудника
+     *
+     * @return слушатель событий
+     */
+    public Management getActionListener() { return actionListener; }
+
     /*------------ Сеттеры -------------*/
 
     /** Сменить образование работника
@@ -81,7 +105,7 @@ public class Employee {
             this.education = education;
             if (actionListener != null)
                 actionListener.actionPerformed(FIO + " получил степень "
-                        + education.getDegree() + " по специальности " + education.getSpecialty());
+                        + education.getDegree().getName() + " по специальности " + education.getSpecialty().getName());
         } else
             throw new IllegalArgumentException("Степень по специальности не может быть понижена");
     }
@@ -90,7 +114,7 @@ public class Employee {
      *
      * @param actionListener слушатель
      */
-    public void setActionListener(EmployeeListener actionListener) {
+    public void setActionListener(Management actionListener) {
         if (actionListener == null) throw new NullPointerException();
         this.actionListener = actionListener;
     }

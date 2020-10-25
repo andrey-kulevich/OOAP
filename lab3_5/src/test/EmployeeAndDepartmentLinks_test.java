@@ -76,7 +76,7 @@ public class EmployeeAndDepartmentLinks_test {
         Employee employee = new Employee("Андреев Андрей Андреевич",
                 new Education(Education.Specialty.CLEANER, Education.Degree.DOCTOR), dep1);
         employee.transferTo(dep2);
-        Assert.assertTrue(employee.getDepartment().getName().equals("досвидули") &&
+        Assert.assertTrue(employee.getDepartment() == dep2 &&
                 dep1.getEmployees().size() == 0 && dep2.getEmployees().size() == 1);
     }
 

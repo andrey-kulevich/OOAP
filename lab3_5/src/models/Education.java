@@ -11,9 +11,20 @@ public class Education {
 
     /*------------ Перечисления -------------*/
     /** Список доступных специальностей */
-    public enum Specialty { DIRECTOR, MANAGER, PR_MANAGER, LAWYER, ECONOMIST, ENGINEER, CLERK, CLEANER }
+    public enum Specialty {
+        DIRECTOR("Директор"), MANAGER("Менеджер"), LAWYER("Юрист"),
+                CLERK("Секретарь"), CLEANER("Уборщик");
+        final private String name;
+        Specialty (String name) { this.name = name; }
+        public String getName() { return name; }
+    }
     /** Список ступеней образования */
-    public enum Degree { SECONDARY_SPECIAL, BACHELOR, MASTER, GRADUATE_STUDENT, DOCTOR }
+    public enum Degree { SECONDARY_SPECIAL("Проф. работник"), BACHELOR("Бакалавр"),
+        MASTER("Магистр"), GRADUATE_STUDENT("Кандидат наук"), DOCTOR("Доктор");
+        final private String name;
+        Degree (String name) { this.name = name; }
+        public String getName() { return name; }
+    }
 
     /*------------ Конструктор -------------*/
 
