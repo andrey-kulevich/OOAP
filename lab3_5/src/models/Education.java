@@ -14,15 +14,34 @@ public class Education {
     public enum Specialty {
         DIRECTOR("Директор"), MANAGER("Менеджер"), LAWYER("Юрист"),
                 CLERK("Секретарь"), CLEANER("Уборщик");
+
+        /** Название специальности */
         final private String name;
+
+        /** Конструктор экземпляра перечисления */
         Specialty (String name) { this.name = name; }
+
+        /** Получить название специальности
+         *
+         * @return название
+         */
         public String getName() { return name; }
     }
+
     /** Список ступеней образования */
     public enum Degree { SECONDARY_SPECIAL("Проф. работник"), BACHELOR("Бакалавр"),
         MASTER("Магистр"), GRADUATE_STUDENT("Кандидат наук"), DOCTOR("Доктор");
+
+        /** Название ступени образования */
         final private String name;
+
+        /** Конструктор экземпляра перечисления */
         Degree (String name) { this.name = name; }
+
+        /** Получить название ступени
+         *
+         * @return название
+         */
         public String getName() { return name; }
     }
 
