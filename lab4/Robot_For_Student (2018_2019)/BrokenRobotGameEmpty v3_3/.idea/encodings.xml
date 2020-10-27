@@ -10,5 +10,6 @@
     <file url="file://$PROJECT_DIR$/src/brokenrobotgame/model/WallPiece.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/brokenrobotgame/model/events/RobotActionEvent.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/src/brokenrobotgame/view/GameFieldPanel.java" charset="windows-1251" />
+    <file url="PROJECT" charset="windows-1251" />
   </component>
 </project>

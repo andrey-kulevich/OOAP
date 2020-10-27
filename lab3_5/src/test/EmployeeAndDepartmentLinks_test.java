@@ -80,4 +80,36 @@ public class EmployeeAndDepartmentLinks_test {
                 dep1.getEmployees().size() == 0 && dep2.getEmployees().size() == 1);
     }
 
+    /** Сменить название отдела */
+    @Test
+    void changeDepartmentName() {
+
+        Department dep1 = new Department("продажи");
+        dep1.setName("маркетинг");
+
+        Assert.assertEquals("маркетинг", dep1.getName());
+    }
+
+    /** При создании работника передано нулевое поле */
+    @Test
+    void nullFieldInConstructorOfEmployee() {
+
+        boolean isError = false;
+        try {
+            Employee employee = new Employee("Андреев Андрей Андреевич",
+                    new Education(Education.Specialty.CLEANER, Education.Degree.DOCTOR), null);
+        } catch (NullPointerException err) {
+            isError = true;
+        }
+        Assert.assertTrue(isError);
+
+        isError = false;
+        try {
+            Employee employee = new Employee("Андреев Андрей Андреевич",
+                    new Education(Education.Specialty.CLEANER, Education.Degree.DOCTOR), new Department("hello"), null);
+        } catch (NullPointerException err) {
+            isError = true;
+        }
+        Assert.assertTrue(isError);
+    }
 }

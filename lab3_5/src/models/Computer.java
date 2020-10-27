@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /** Класс компьютера */
@@ -96,6 +97,8 @@ public class Computer {
     /** Прекратить использование */
     public void stop () {
         isStarted = false;
-        log.add(owner.getFIO() + " использовал компьютер " + pcId + " c " + timeStart + " по " + LocalDateTime.now());
+        log.add(owner.getFIO() + " использовал компьютер " + pcId + " c " +
+                timeStart.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " по " +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
     }
 }

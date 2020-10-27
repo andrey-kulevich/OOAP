@@ -32,4 +32,18 @@ public class EmployeeAndCardLinks_test {
 
         Assert.assertEquals(500, employee.getIdCard().getNumber());
     }
+
+    /** Задан некорректный свободный номер для карточки */
+    @Test
+    void invalidNumberForCard() {
+
+        boolean isError = false;
+        try {
+            Card.setFreeNumber(-1);
+        } catch (IllegalArgumentException err) {
+            isError = true;
+        }
+
+        Assert.assertTrue(isError);
+    }
 }
