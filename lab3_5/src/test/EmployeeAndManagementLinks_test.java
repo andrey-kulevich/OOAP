@@ -84,4 +84,32 @@ public class EmployeeAndManagementLinks_test {
                         "Андреев Андрей Андреевич уволен",
                 employee.getActionListener().getReport());
     }
+
+    /** Получить отчет по конкретному работнику */
+    @Test
+    void fullReportByCertainEmployee() {
+
+        Management employeeListener = new Management();
+        Employee employee1 = new Employee("Андреев Андрей Андреевич",
+                new Education(Education.Specialty.LAWYER, Education.Degree.BACHELOR),
+                new Department("Реклама"), employeeListener);
+        Employee employee2 = new Employee("Вася Пупкин",
+                new Education(Education.Specialty.CLEANER, Education.Degree.MASTER),
+                new Department("Продажи"), employeeListener);
+
+        employee1.setEducation(new Education(Education.Specialty.CLEANER, Education.Degree.DOCTOR));
+        Department newDep1 = new Department("Старые разработки");
+        employee1.transferTo(newDep1);
+        employee2.setEducation(new Education(Education.Specialty.CLEANER, Education.Degree.DOCTOR));
+        Department newDep2 = new Department("Новые разработки");
+        employee2.transferTo(newDep2);
+        employee1.fireFromCompany();
+        employee2.fireFromCompany();
+
+        Assert.assertEquals("Вася Пупкин принят в отдел Продажи\n" +
+                        "Вася Пупкин получил степень Доктор по специальности Уборщик\n" +
+                        "Вася Пупкин переведен в отдел Новые разработки\n" +
+                        "Вася Пупкин уволен\n",
+                employeeListener.getReport(employee2.getFIO()));
+    }
 }
