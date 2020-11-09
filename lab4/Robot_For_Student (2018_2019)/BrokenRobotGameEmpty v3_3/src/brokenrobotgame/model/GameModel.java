@@ -6,77 +6,89 @@ import brokenrobotgame.model.navigation.CellPosition;
 import brokenrobotgame.model.navigation.Direction;
 import brokenrobotgame.model.navigation.MiddlePosition;
 
-/*
+/**
  * GameModel - абстракция всей игры; генерирует стартовую обстановку; 
  * следит за роботом с целью определения конца игры
  */
 public class GameModel {
 
+    /** игровое поле */
+    private final GameField _field = new GameField();
+    /** целевая позиция робота */
+    private CellPosition _targetPos;
+    /** робот */
+    private Robot _robot;
+
     // ----------------------- Игровое поле и робот на нем ------------------
-    GameField _field = new GameField();
-    
-    public GameField field(){
-        return _field;
-    }
-    
-    !!!
-    
-    public Robot robot(){
-        !!!
+
+    /** Получить игровое поле
+     *
+     * @return игровое поле
+     */
+    public GameField field() { return _field; }
+
+    /** Получить робота
+     *
+     * @return робот
+     */
+    public Robot robot() { return _robot; }
+
+    /** Установить робота
+     *
+     * @param robot робот
+     */
+    private void setRobot(Robot robot) {
+        _field.setRobot(robot);
+        this._robot = robot;
     }
 
-    public void start(){
+    /** начать игру */
+    public void start() {
         generateField();
-        
-        // Вдруг игра завершилась, еще не начавшись
-        identifyGameOver();
-        
-        // "Следим" за роботом
-        !!!
+        identifyGameOver(); // Вдруг игра завершилась, еще не начавшись
+        _robot.addRobotActionListener(new RobotObserver()); // "Следим" за роботом
     }
     
     // -------------------- Целевая позиция робота --------------------------
-    CellPosition _targetPos;
-    
-    public CellPosition targetPosition(){
-        return _targetPos;
-    }
-    
+
+    /** Получить целевую позицию робота
+     *
+     * @return целевая позиция
+     */
+    public CellPosition targetPosition() { return _targetPos; }
+
     // ------------ Задаем обстановку и следим за окончанием игры  ------------
 
-    private void generateField(){
+    /** Сгенерировать игровое поле */
+    private void generateField() {
 
         // Обстановка = робот+стены+батарейка на поле+двери
-        !!!
-        _field.addWall(new MiddlePosition(robot().position(), Direction.east()), new WallPiece(_field));
-        _field.addWall(new MiddlePosition(robot().position(), Direction.south()), new WallPiece(_field));
+        _field.clear();
+        setRobot(new Robot(_field, new Battery(_field, 10, 10)));
+        _robot.setPosition(new CellPosition(4, 5));
+        _field.addWall(new MiddlePosition(_robot.position(), Direction.east()), new WallPiece(_field));
+        _field.addWall(new MiddlePosition(_robot.position(), Direction.south()), new WallPiece(_field));
         Battery outBattery = new Battery(_field, 5, 3);
         _field.addBattery(new CellPosition(2, 1), outBattery);
         //_field.addBattery(robot().position().next(Direction.south()).next(Direction.south()), outBattery);
         _field.addDoor(new MiddlePosition(new CellPosition(5, 4), Direction.east()), new Door(_field));
         _field.addDoor(new MiddlePosition(new CellPosition(1, 1), Direction.north()), new Door(_field));
-        
-        
+
         // Целевая позиция рядом с роботом
-        _targetPos = robot().position().next(Direction.west());
+        _targetPos = _robot.position().next(Direction.west());
     }
-    
-    private void identifyGameOver(){
-        
-        if(robot().position().equals(_targetPos))
-        {
-            System.out.println("You reach target position!!!");
-        }
-        else if(robot().amountОfСharge()==0)
-        {
-            System.out.println("Your amount of charge is null!!!");
-        }
-    }   
-    
-    private class RobotObserver implements RobotActionListener{
+
+    /** Определить окончание игры */
+    private void identifyGameOver() {
+        if (_robot.position().equals(_targetPos)) System.out.println("You reached target position!!!");
+        else if (_robot.amountOfCharge() == 0) System.out.println("Your amount of charge is null!!!");
+    }
+
+    /** Класс-слушатель событий робота */
+    private class RobotObserver implements RobotActionListener {
 
         @Override
-        public void robotMakedMove(RobotActionEvent e) {
+        public void robotMadeMove(RobotActionEvent e) {
             identifyGameOver();
         }
     }

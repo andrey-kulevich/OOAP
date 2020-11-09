@@ -24,7 +24,7 @@ public class CellPosition {
      * @param col позиция по вертикали
      */
     public CellPosition(int row, int col) {
-        //  TODO породить исключение
+
         if(!isValid(row, col)) throw new IllegalArgumentException("Invalid position");
         _row = row;
         _column = col;
@@ -100,7 +100,6 @@ public class CellPosition {
      * @return позиция
      */
     public int row() {
-        //  TODO породить исключение
         if(!isValid()) throw new IllegalArgumentException("Invalid position");
         return _row;
     }
@@ -110,7 +109,6 @@ public class CellPosition {
      * @return позиция
      */
     public int column() {
-        //  TODO породить исключение
         if(!isValid()) throw new IllegalArgumentException("Invalid position");
         return _column;
     }

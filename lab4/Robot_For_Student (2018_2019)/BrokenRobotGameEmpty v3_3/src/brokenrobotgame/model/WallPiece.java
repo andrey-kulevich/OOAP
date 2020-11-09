@@ -9,7 +9,7 @@ import brokenrobotgame.model.navigation.MiddlePosition;
 class WallPiece
 {
     // ------------------- Устанавливаем связь с игровым полем -----------------
-    private GameField _field;
+    private final GameField _field;
 
     public WallPiece(GameField field) {
         _field = field;
@@ -44,7 +44,7 @@ class WallPiece
         Direction direct = position().direction();
 
         if(direct.equals(Direction.south()) || direct.equals(Direction.north()))   return VERTICAL;
-        if(direct.equals(Direction.west()) || direct.equals(Direction.east()))      return HORIZONTAL;
+        if(direct.equals(Direction.west()) || direct.equals(Direction.east()))     return HORIZONTAL;
 
         // TODO Исключение
         return -1;

@@ -16,10 +16,10 @@ import javax.swing.SwingUtilities;
 
 public class BreakRobotGame extends JFrame {
 
-    private GameModel _model;
-    
+    private final GameModel _model;
+
     private GameFieldPanel _gamePanel;
-    
+
     //===================================================================== main
     public static void main(String[] args) {
 

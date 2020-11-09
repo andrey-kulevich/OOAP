@@ -41,9 +41,7 @@ public class GameField {
      *
      * @return ширина
      */
-    public int width() {
-        return CellPosition.horizontalRange().length();
-    }
+    public int width() { return CellPosition.horizontalRange().length(); }
 
     /** Получить высоту поля
      *
@@ -135,11 +133,7 @@ public class GameField {
      */
     public Battery battery(CellPosition pos) {
         
-        for (Battery obj : _batteryPool) {
-            try {
-                if(obj.position().equals(pos))  return obj;
-            } catch (Exception ignored) { }
-        }
+        for (Battery obj : _batteryPool) { if(obj.position().equals(pos))  return obj; }
         return null;
     }
 

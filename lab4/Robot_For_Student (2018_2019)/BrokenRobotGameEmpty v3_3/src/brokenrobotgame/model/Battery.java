@@ -12,9 +12,9 @@ public class Battery {
     /** игровое поле */
     private final GameField _field;
     /** емкость в условных единицах */
-    private int _chargeCapacity = 100;
+    private final int _chargeCapacity;
     /** заряд в условных единицах */
-    private int _amountOfCharge = _chargeCapacity;
+    private int _amountOfCharge;
     /** позиция батареи */
     private CellPosition _position;
 
@@ -25,7 +25,7 @@ public class Battery {
      * @param amount заряд батареи
      */
     public Battery(GameField field, int capacity, int amount) {
-        // TODO исключение, если заряд больше емкости
+        if (field == null) throw new NullPointerException();
         if (amount > capacity) throw new IllegalArgumentException("Amount of charge cannot be more than capacity");
         
         _field = field;
@@ -44,34 +44,27 @@ public class Battery {
     /** Получить емкость батареи
      *
      * @return емкость
-     * @throws Exception если батарея уничтожена
      */
-    public int chargeCapacity() throws Exception {
-        // TODO исключение, если батарея уничтожена
-        if (_isDestroy) throw new Exception("Battery has destroyed");
+    public int chargeCapacity() {
+        if (_isDestroy) throw new RuntimeException("Battery has destroyed");
         return _chargeCapacity;
     }
 
     /** Получить заряд батареи
      *
      * @return заряд
-     * @throws Exception если батарея уничтожена
      */
-    public int amountOfCharge() throws Exception {
-        // TODO исключение, если батарея уничтожена
-        if (_isDestroy) throw new Exception("Battery has destroyed");
+    public int amountOfCharge() {
+        if (_isDestroy) throw new RuntimeException("Battery has destroyed");
         return _amountOfCharge;
     }
 
     /** Уменьшить заряд батареи
      *
      * @param delta на сколько уменьшить заряд
-     * @throws Exception если батарея уничтожена
      */
-    public void reduceCharge(int delta) throws Exception {
-        // TODO исключение, если батарея уничтожена
-        if (_isDestroy) throw new Exception("Батарея уничтожена");
-        // TODO исключение, если delta не положительное
+    public void reduceCharge(int delta) {
+        if (_isDestroy) throw new RuntimeException("Батарея уничтожена");
         if (delta < 0) throw new IllegalArgumentException("Delta cannot be negative");
         _amountOfCharge -= delta;
 	    if(_amountOfCharge < 0) _amountOfCharge = 0;
@@ -82,11 +75,9 @@ public class Battery {
     /** Получить позицию батареи
      *
      * @return позиция
-     * @throws Exception если батарея уничтожена
      */
-    public CellPosition position() throws Exception {
-        // TODO исключение, если батарея уничтожена
-        if (_isDestroy) throw new Exception("Батарея уничтожена");
+    public CellPosition position() {
+        if (_isDestroy) throw new RuntimeException("Батарея уничтожена");
         return _position;
     }
 
@@ -95,7 +86,7 @@ public class Battery {
      * @param pos позиция
      * @return успешность установки позиции
      */
-    boolean setPosition(CellPosition pos) {
+    public boolean setPosition(CellPosition pos) {
 
         if (pos == null) { // батарейка вне поля
             _position = null;

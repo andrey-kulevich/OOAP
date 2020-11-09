@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 public class GameFieldPanel extends JPanel implements KeyListener {
     
     // ------------------------------ Модель игры ------------------------------
-    private GameModel _model;
+    private final GameModel _model;
     
     
     // ------------------------------ Размеры ---------------------------------
@@ -62,7 +62,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
         g.setColor(Color.BLACK);   // восстнанваливаем цвет пера
               
         // Отрисовка сетки
-        darwGrid(g);
+        drawGrid(g);
 
         // Отрисовка робота
         Point lefTop = leftTopCell(_model.robot().position());
@@ -127,7 +127,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
     }
     
     
-    private void darwGrid(Graphics g) {
+    private void drawGrid(Graphics g) {
         int width  = getWidth();
         int height = getHeight();
 
@@ -150,7 +150,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
     private void drawRobot(Graphics g, Robot robot, Point lefTop) {
         g.setColor(Color.RED);   
 
-        String str = "Р/" + robot.amountОfСharge();
+        String str = "Р/" + robot.amountOfCharge();
         g.drawString(str, lefTop.x+CELL_SIZE/8, lefTop.y+CELL_SIZE/4+FONT_HEIGHT);
 
         g.setColor(Color.BLACK);   // восстанавливаем цвет пера
@@ -159,7 +159,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
     private void drawBattery(Graphics g, Battery battery, Point lefTop) {
         g.setColor(Color.RED);   
 
-        String str = "Б/" + battery.amountОfСharge();
+        String str = "Б/" + battery.amountOfCharge();
         g.drawString(str, lefTop.x+CELL_SIZE/8, lefTop.y+CELL_SIZE/4+FONT_HEIGHT);
     
         g.setColor(Color.BLACK);   // восстанавливаем цвет пера
@@ -283,10 +283,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
             }
             else if(ke.getKeyCode() == KeyEvent.VK_SPACE) { // берем батарейку
                 Battery battery = _model.field().battery(_model.robot().position());
-                if(battery != null)
-                {
-                    !!!
-                }
+                if(battery != null) _model.robot().useBattery(battery);
             }
         }
     }
@@ -299,7 +296,7 @@ public class GameFieldPanel extends JPanel implements KeyListener {
     private class RepaintByAction implements RobotActionListener{
 
         @Override
-        public void robotMakedMove(RobotActionEvent e) {
+        public void robotMadeMove(RobotActionEvent e) {
             repaint();
         }
     }
