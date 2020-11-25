@@ -5,11 +5,6 @@ import java.util.Arrays;
 /** Класс, описывающий прямоугольник */
 public class MyRectangle extends MyAbstractPolygon {
 
-    /** ширина прямоугольника */
-    private final int width;
-    /** высота прямоугольника */
-    private final int height;
-
     /** Конструктор
      *
      * @param pos левый верхний угол прямоугольника
@@ -19,21 +14,19 @@ public class MyRectangle extends MyAbstractPolygon {
     public MyRectangle(Point pos, int width, int height) {
         super(new ArrayList<Point>(Arrays.asList(pos,
                 new Point(pos.x + width, pos.y + height))));
-        this.width = width;
-        this.height = height;
     }
 
     /** Получить высоту прямоугольника
      *
      * @return высота
      */
-    public int height() { return height; }
+    public int height() { return rightBottom.y - leftTop.y; }
 
     /** Получить ширину прямоугольника
      *
      * @return ширина
      */
-    public int width() { return width; }
+    public int width() { return rightBottom.x - leftTop.x; }
 
     @Override
     public boolean isCovering(Point point) {
@@ -42,7 +35,7 @@ public class MyRectangle extends MyAbstractPolygon {
     }
 
     @Override
-    public double area() { return width * height; }
+    public double area() { return width() * height(); }
 
     @Override
     public boolean equals(Object obj) {
