@@ -12,7 +12,9 @@ public class MyRectangle extends MyAbstractPolygon {
      * @param height высота прямоугольника
      */
     public MyRectangle(Point pos, int width, int height) {
-        super(new ArrayList<Point>(Arrays.asList(pos,
+        super(new ArrayList<>(Arrays.asList(pos,
+                new Point(pos.x + width, pos.y),
+                new Point(pos.x, pos.y + height),
                 new Point(pos.x + width, pos.y + height))));
     }
 

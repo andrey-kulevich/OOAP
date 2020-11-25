@@ -9,8 +9,9 @@ public class MyLineSegment extends MyGraphicPrimitive2D {
      * @param point2 координата второго края отрезка
      */
     public MyLineSegment(Point point1, Point point2) {
+
         super(Math.min(point1.x, point2.x) == point1.x ? point1 : point2,
-                Math.max(point1.x, point2.x) == point1.x ? point1 : point2);
+                Math.max(point1.x, point2.x) == point2.x ? point2 : point1);
     }
 
     /** Получить левый край отрезка

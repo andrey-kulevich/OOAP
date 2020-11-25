@@ -42,7 +42,7 @@ public class MyCircle extends MyAreaPrimitive2D {
 
     @Override
     public boolean isCovering(Point point) {
-        return Math.sqrt(Math.pow((center.x - point.x), 2) + Math.pow((center.y - point.y), 2)) < radius;
+        return Math.sqrt(Math.pow((center.x - point.x), 2) + Math.pow((center.y - point.y), 2)) <= radius;
     }
 
     @Override

@@ -19,41 +19,30 @@ public class MyPolygon extends MyAbstractPolygon {
 
     @Override
     public boolean isCovering(Point point) {
+        int i;
+        int j;
         boolean result = false;
-        int j = points.size() - 1;
-
-        for (int i = 0; i < points.size(); i++) {
-            if ((points.get(i).y < point.y && points.get(j).y >= point.y
-                    || points.get(j).y < point.y && points.get(i).y >= point.y) &&
-                    (points.get(i).x + (point.y - points.get(i).y) / (points.get(j).y - points.get(i).y) *
-                            (points.get(j).x - points.get(i).x) < point.x))
+        for (i = 0, j = points.size() - 1; i < points.size(); j = i++) {
+            if ((points.get(i).y >= point.y) != (points.get(j).y >= point.y) &&
+                    (point.x <= (points.get(j).x - points.get(i).x) * (point.y - points.get(i).y) /
+                            (points.get(j).y - points.get(i).y) + points.get(i).x)) {
                 result = !result;
-            j = i;
+            }
         }
         return result;
     }
 
     @Override
     public double area() {
-        double result = 0;
-        int min = points.get(0).y;
+        double area = 0.0;
 
-        for (int i = 1; i < points.size(); i++) {
-            if (points.get(i).y < min) min = points.get(i).y;
+        int j = points.size() - 1;
+        for (int i = 0; i < points.size(); i++) {
+            area += (points.get(j).x + points.get(i).x) * (points.get(j).y - points.get(i).y);
+            j = i;
         }
-        if (min < 0) {
-            for (Point point : points) {
-                point.move(point.x, point.y - min);
-            }
-        }
-        result = Math.abs((points.get(0).x - points.get(points.size() - 1).x) *
-                (points.get(0).y + points.get(points.size() - 1).y));
 
-        for (int i = 1; i < points.size(); i++) {
-            result = result + Math.abs((points.get(i).x - points.get(i - 1).x) *
-                    (points.get(i).y + points.get(i - 1).y));
-        }
-        return result;
+        return Math.abs(area / 2.0);
     }
 
     @Override

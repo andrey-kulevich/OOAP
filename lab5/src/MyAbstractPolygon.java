@@ -34,21 +34,22 @@ public abstract class MyAbstractPolygon extends MyAreaPrimitive2D {
      */
     private static Point getCorner(ArrayList<Point> points, corners corner) {
         if (points == null || points.size() == 0) throw new IllegalArgumentException("Invalid set of points");
+        if (points.size() < 3) throw new IllegalArgumentException("This is not polygon (less than 3 points)");
 
         int left = points.get(0).x;
         int top = points.get(0).y;
 
-        if (corner == corners.LEFT_TOP) {
-            for (int i = 1; i < points.size(); i++) {
+        for (int i = 1; i < points.size(); i++) {
+            if (points.get(i) == null) throw new NullPointerException();
+            if (corner == corners.LEFT_TOP) {
                 if (points.get(i).x < left) left = points.get(i).x;
+                if (points.get(i).y < top) top = points.get(i).y;
+            } else {
+                if (points.get(i).x > left) left = points.get(i).x;
                 if (points.get(i).y > top) top = points.get(i).y;
             }
-        } else {
-            for (int i = 1; i < points.size(); i++) {
-                if (points.get(i).x > left) left = points.get(i).x;
-                if (points.get(i).y < top) top = points.get(i).y;
-            }
         }
+
         return new Point(left, top);
     }
 

@@ -15,6 +15,7 @@ public abstract class MyGraphicPrimitive2D {
      * @param rightBottom координата нижнего правого угла прямоугольной области
      */
     public MyGraphicPrimitive2D(Point leftTop, Point rightBottom) {
+        if (leftTop == null || rightBottom == null) throw new NullPointerException();
         this.leftTop = leftTop;
         this.rightBottom = rightBottom;
     }
