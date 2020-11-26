@@ -2,6 +2,8 @@ import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MySquare_test {
 
@@ -66,5 +68,21 @@ public class MySquare_test {
 
         MySquare square = new MySquare(new Point(0, 0), 5);
         Assert.assertEquals(25, square.area(),0.0);
+    }
+
+    /** Комплексный тест */
+    @Test
+    void complexTest() {
+
+        MySquare square = new MySquare(new Point(1, 1), 5);
+        Assert.assertEquals(new Point(1, 1), square.getLeftTop());
+        square.move(0,2);
+        Assert.assertEquals(square.points, new ArrayList<>(Arrays.asList(
+                new Point(1, 3),
+                new Point(6,3),
+                new Point(1,8),
+                new Point(6,8))));
+        Assert.assertTrue(square.isCovering(new Point(2,4)));
+        Assert.assertEquals(25, square.area(), 0.0);
     }
 }

@@ -109,4 +109,22 @@ public class MyPolygon_test {
                 new Point(0,4))));
         Assert.assertEquals(2, polygon.area(), 0.0);
     }
+
+    /** Комплексный тест */
+    @Test
+    void complexTest() {
+
+        MyPolygon polygon = new MyPolygon(new ArrayList<>(Arrays.asList(
+                new Point(1,1),
+                new Point(2,2),
+                new Point(0,4))));
+        Assert.assertEquals(new Point(0, 1), polygon.getLeftTop());
+        polygon.move(0,2);
+        Assert.assertEquals(polygon.points, new ArrayList<>(Arrays.asList(
+                new Point(1, 3),
+                new Point(2, 4),
+                new Point(0, 6))));
+        Assert.assertTrue(polygon.isCovering(new Point(2,4)));
+        Assert.assertEquals(2, polygon.area(), 0.0);
+    }
 }

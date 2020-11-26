@@ -73,4 +73,16 @@ public class MyCircle_test {
         MyCircle circle = new MyCircle(new Point(2,2), 2);
         Assert.assertEquals(Math.PI * 4, circle.area(), 0.0);
     }
+
+    /** Комплексный тест */
+    @Test
+    void complexTest() {
+
+        MyCircle circle = new MyCircle(new Point(2,2), 2);
+        Assert.assertEquals(new Point(0, 0), circle.getLeftTop());
+        circle.move(2,0);
+        Assert.assertEquals(circle.center(), new Point(4, 2));
+        Assert.assertTrue(circle.isCovering(circle.center()));
+        Assert.assertEquals((int)Math.PI * 4, (int)circle.area());
+    }
 }

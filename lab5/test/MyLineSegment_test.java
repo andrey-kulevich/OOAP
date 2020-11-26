@@ -24,10 +24,10 @@ public class MyLineSegment_test {
     @Test
     void moveLine() {
 
-        MyLineSegment line = new MyLineSegment(new Point(1,1), new Point(2, 2));
+        MyLineSegment line = new MyLineSegment(new Point(2,2), new Point(1, 1));
         line.move(50, -100);
-        Assert.assertTrue(line.leftTop.equals(new Point(51, -99)) &&
-                line.rightBottom.equals(new Point(52, -98)));
+        Assert.assertTrue(line.rightPoint().equals(new Point(52, -98)) &&
+                line.leftPoint().equals(new Point(51, -99)));
     }
 
     /** Проверить принадлежность точки отрезку */
@@ -70,6 +70,21 @@ public class MyLineSegment_test {
         Assert.assertEquals(10, line.length());
     }
 
+    /** Комплексный тест */
+    @Test
+    void complexTest() {
+
+        MyLineSegment line = new MyLineSegment(new Point(0,3), new Point(3, 0));
+        Assert.assertEquals(new Point(0, 0), line.getLeftTop());
+        line.move(2,0);
+        Assert.assertTrue(line.leftPoint().equals(new Point(2, 3)) &&
+                line.rightPoint().equals(new Point(5, 0)));
+        Assert.assertFalse(line.isCovering(new Point(3,2)));
+        Assert.assertEquals((int)(line.getAreaWidth() * Math.sqrt(2)), line.length());
+    }
+
+
+    /** Тест вызывает все возможные геттеры классов */
     @Test
     void gettersCall() {
 
