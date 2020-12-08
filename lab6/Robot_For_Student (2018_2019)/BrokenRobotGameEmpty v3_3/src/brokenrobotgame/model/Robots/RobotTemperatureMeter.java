@@ -18,11 +18,11 @@ public class RobotTemperatureMeter extends Robot {
     /** »змерить температуру в данной позиции
      *
      * @param pos позици€
-     * @return температура (null, если у робота кончилс€ зар€д)
+     * @return температура (null, если у робота кончилс€ зар€д или переданна€ позици€ не совпадает с позицией робота)
      */
     public TemperatureKelvin measureTemperature(CellPosition pos) {
         if (pos == null) throw new NullPointerException();
-        if (amountOfCharge() > 0) {
+        if (amountOfCharge() > 0 && position().equals(pos)) {
             reduceCharge(1);
             fireRobotAction();
             return getField().getTemperature(pos);

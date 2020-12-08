@@ -16,11 +16,11 @@ public class RobotPainter extends Robot {
 
     /** Закрасить клетку
      *
-     * @param pos позиция
+     * @param pos позиция (должна быть не от null и совпадать с позицией робота)
      */
     public void paintCell(CellPosition pos) {
         if (pos == null) throw new NullPointerException();
-        if (amountOfCharge() > 0) {
+        if (amountOfCharge() > 0 && position().equals(pos)) {
             if (getField().paintCell(pos)) reduceCharge(1);
             fireRobotAction();
         }
@@ -28,11 +28,11 @@ public class RobotPainter extends Robot {
 
     /** Очистить клетку
      *
-     * @param pos позиция
+     * @param pos позиция (должна быть не от null и совпадать с позицией робота)
      */
     public void clearCell(CellPosition pos) {
         if (pos == null) throw new NullPointerException();
-        if (amountOfCharge() > 0) {
+        if (amountOfCharge() > 0 && position().equals(pos)) {
             if (getField().clearCell(pos)) reduceCharge(1);
             fireRobotAction();
         }

@@ -1,38 +1,78 @@
 import brokenrobotgame.model.GameModel;
+import brokenrobotgame.model.Robots.Robot;
+import brokenrobotgame.model.Robots.RobotPainter;
+import brokenrobotgame.model.Robots.RobotRadiationMeter;
+import brokenrobotgame.model.Robots.RobotTemperatureMeter;
+
+import brokenrobotgame.model.navigation.CellPosition;
 import brokenrobotgame.model.navigation.Direction;
-import org.junit.Assert;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class GameModel_test {
 
-    /** Начать игру */
+    /** Установить случайного робота */
     @Test
-    void startGame() {
-
+    void setRandomRobotToGame() {
         GameModel model = new GameModel();
-        model.start();
-
-        Assert.assertTrue(model.robot() != null && model.field() != null);
+        model.setRandomRobot();
+        Assertions.assertTrue(model.robot().getClass() == Robot.class ||
+                model.robot().getClass() == RobotPainter.class ||
+                model.robot().getClass() == RobotRadiationMeter.class ||
+                model.robot().getClass() == RobotTemperatureMeter.class);
     }
 
-    /** Робот достиг целевой позиции */
+    /** Сгенерировать радиацию для каждой клетки поля */
     @Test
-    void robotReachedTargetPos() {
-
+    void generateRadiationToCells() {
         GameModel model = new GameModel();
-        model.start();
+        model.initRadiationPollutionToCells();
+        boolean isRadiation = true;
 
-        model.robot().makeMove(Direction.west());
-        Assert.assertEquals(model.robot().position(), model.targetPosition());
+        CellPosition pos = new  CellPosition(1,1);
+        Direction direct = Direction.east();
+        boolean hasNextInCol;
+        boolean hasNextInRow;
+        do {
+            do {
+                if (model.field().getRadiation(pos) == null) isRadiation = false;
+                hasNextInRow = pos.hasNext(direct);
+                if(pos.hasNext(direct)) pos = pos.next(direct);
+            } while(hasNextInRow);
+
+            direct = direct.opposite();
+            hasNextInCol = pos.hasNext(Direction.south());
+            if(pos.hasNext(Direction.south())) pos = pos.next(Direction.south());
+        } while(hasNextInCol);
+
+        Assertions.assertTrue(isRadiation);
     }
 
-    /** У робота кончился заряд */
+    /** Сгенерировать температуру для каждой клетки поля */
     @Test
-    void endOfChargeInRobot() {
-
+    void generateTemperatureToCells() {
         GameModel model = new GameModel();
-        model.start();
-        model.robot().reduceCharge(10);
-        Assert.assertEquals(0, model.robot().amountOfCharge());
+        model.initTemperatureLevelsToCells();
+        boolean isTemperature = true;
+
+        CellPosition pos = new  CellPosition(1,1);
+        Direction direct = Direction.east();
+        boolean hasNextInCol;
+        boolean hasNextInRow;
+        do {
+            do {
+                if (model.field().getTemperature(pos) == null) isTemperature = false;
+                hasNextInRow = pos.hasNext(direct);
+                if(pos.hasNext(direct)) pos = pos.next(direct);
+            } while(hasNextInRow);
+
+            direct = direct.opposite();
+            hasNextInCol = pos.hasNext(Direction.south());
+            if(pos.hasNext(Direction.south())) pos = pos.next(Direction.south());
+        } while(hasNextInCol);
+
+        Assertions.assertTrue(isTemperature);
     }
+
 }

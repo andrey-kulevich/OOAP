@@ -87,7 +87,7 @@ public class GameModel {
     }
 
     /** ”становить на поле любого из четырех роботов */
-    private void setRandomRobot() {
+    public void setRandomRobot() {
         switch ((int)getRandomNumber(0, 4)) {
             case 0 -> setRobot(new Robot(_field, new Battery(_field, 30, 30)));
             case 1 -> {
@@ -103,35 +103,43 @@ public class GameModel {
     }
 
     /** ”становить случайный уровень радиации во всех €чейках */
-    private void initRadiationPollutionToCells() {
+    public void initRadiationPollutionToCells() {
         CellPosition pos = new  CellPosition(1,1);
         Direction direct = Direction.east();
         _field.setRadiationToCell(pos, new RadiationSievert(getRandomNumber(0,8)));
+        boolean hasNextInCol;
+        boolean hasNextInRow;
         do {
             do {
-                if(pos.hasNext(direct)) pos = pos.next(direct);
                 _field.setRadiationToCell(pos, new RadiationSievert(getRandomNumber(0,8)));
-            } while(pos.hasNext(direct));
+                hasNextInRow = pos.hasNext(direct);
+                if(pos.hasNext(direct)) pos = pos.next(direct);
+            } while(hasNextInRow);
 
             direct = direct.opposite();
+            hasNextInCol = pos.hasNext(Direction.south());
             if(pos.hasNext(Direction.south())) pos = pos.next(Direction.south());
-        } while(pos.hasNext(Direction.south()));
+        } while(hasNextInCol);
     }
 
     /** ”становить случайную температуру во всех €чейках */
-    private void initTemperatureLevelsToCells() {
+    public void initTemperatureLevelsToCells() {
         CellPosition pos = new  CellPosition(1,1);
         Direction direct = Direction.east();
         _field.setTemperatureToCell(pos, new TemperatureKelvin(getRandomNumber(0,1000)));
+        boolean hasNextInCol;
+        boolean hasNextInRow;
         do {
             do {
-                if(pos.hasNext(direct)) pos = pos.next(direct);
                 _field.setTemperatureToCell(pos, new TemperatureKelvin(getRandomNumber(0,1000)));
-            } while(pos.hasNext(direct));
+                hasNextInRow = pos.hasNext(direct);
+                if(pos.hasNext(direct)) pos = pos.next(direct);
+            } while(hasNextInRow);
 
             direct = direct.opposite();
+            hasNextInCol = pos.hasNext(Direction.south());
             if(pos.hasNext(Direction.south())) pos = pos.next(Direction.south());
-        } while(pos.hasNext(Direction.south()));
+        } while(hasNextInCol);
     }
 
     /** ѕолучить случайное дробное число в заданном диапазоне

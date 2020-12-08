@@ -5,6 +5,7 @@ import brokenrobotgame.model.GameField;
 import brokenrobotgame.model.navigation.CellPosition;
 import brokenrobotgame.model.quantities.RadiationSievert;
 
+/** Робот, умеющий измерять радиацию */
 public class RobotRadiationMeter extends Robot {
 
     /** Конструктор
@@ -19,11 +20,11 @@ public class RobotRadiationMeter extends Robot {
     /** Измерить уровень радиации в данной позиции
      *
      * @param pos позиция
-     * @return радиация (null, если у робота кончился заряд)
+     * @return радиация (null, если у робота кончился заряд или переданная позиция не совпадает с позицией робота)
      */
     public RadiationSievert measureRadiation(CellPosition pos) {
         if (pos == null) throw new NullPointerException();
-        if (amountOfCharge() > 0) {
+        if (amountOfCharge() > 0 && position().equals(pos)) {
             reduceCharge(1);
             fireRobotAction();
             return getField().getRadiation(pos);
