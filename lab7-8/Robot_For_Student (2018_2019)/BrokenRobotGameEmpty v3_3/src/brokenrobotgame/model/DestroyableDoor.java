@@ -22,7 +22,6 @@ public class DestroyableDoor extends Door implements Destroyable {
     public void destroy() {
         durability = 0;
         field.removeObject(this);
-        unsetField();
     }
 
     @Override

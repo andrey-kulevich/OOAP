@@ -79,6 +79,10 @@ public class GameModel {
         Door door2 = new Door(_field);
         door1.setPosition(new MiddlePosition(new CellPosition(5, 4), Direction.east()));
         door2.setPosition(new MiddlePosition(new CellPosition(1, 1), Direction.north()));
+        Door door3 = new DestroyableDoor(_field);
+        Door door4 = new DestroyableDoor(_field);
+        door3.setPosition(new MiddlePosition(new CellPosition(6, 4), Direction.east()));
+        door4.setPosition(new MiddlePosition(new CellPosition(6, 4), Direction.north()));
         WallPiece wall1 = new WallPiece(_field);
         WallPiece wall2 = new WallPiece(_field);
         wall1.setPosition(new MiddlePosition(_robot.position(), Direction.east()));
@@ -90,6 +94,8 @@ public class GameModel {
         _field.addObject(battery);
         _field.addObject(door1);
         _field.addObject(door2);
+        _field.addObject(door3);
+        _field.addObject(door4);
 
         // Целевая позиция рядом с роботом
         _targetPos = _robot.position().next(Direction.west());

@@ -96,14 +96,25 @@ public class Robot extends GameObject<CellPosition> {
             }
         }    
     }
+
+
+    // ------------------- Робот может наносить повреждения разрушимым объектам -----------------
+
+    /** Нанести повреждение объекту
+     *
+     * @param target целевой объект
+     * @param damage урон
+     */
+    public void makeDamage(Destroyable target, int damage) {
+        if (target != null) {
+            target.hit(damage);
+            reduceCharge(1);
+            fireRobotAction();
+        }
+    }
+
     
     // ------------------- Позиция робота -----------------
-
-    /** Получить позицию робота
-     *
-     * @return позиция
-     */
-    public CellPosition position() { return position.clone(); }
 
     /** Установить позицию объекта на поле
      *

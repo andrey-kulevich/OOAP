@@ -173,7 +173,9 @@ public class GameFieldPanel extends JPanel implements KeyListener {
     }
 
     private void drawDoor(Graphics g, Door door, Point lefTop) {
-        g.setColor(Color.BLUE);
+
+        if (door.getClass() == DestroyableDoor.class) g.setColor(Color.MAGENTA);
+        else g.setColor(Color.BLUE);
         Direction direct = door.position().direction();
         
         if(direct.equals(Direction.west()) || direct.equals(Direction.east())) {
@@ -227,6 +229,24 @@ public class GameFieldPanel extends JPanel implements KeyListener {
             else if(ke.getKeyCode() == KeyEvent.VK_RIGHT) { // откр/закр дверь справа
                 _model.robot().openCloseDoor(Direction.east());
             }
+
+        } else if (ke.isAltDown()) { // Разрушить объект
+            GameObject object = null;
+
+            if(ke.getKeyCode() == KeyEvent.VK_ENTER) {
+                object = _model.field().getObject(_model.robot().position());
+            } else if(ke.getKeyCode() == KeyEvent.VK_UP) {
+                object = _model.field().getObject(new MiddlePosition(_model.robot().position(), Direction.north()));
+            } else if(ke.getKeyCode() == KeyEvent.VK_DOWN) {
+                object = _model.field().getObject(new MiddlePosition(_model.robot().position(), Direction.south()));
+            } else if(ke.getKeyCode() == KeyEvent.VK_LEFT) {
+                object = _model.field().getObject(new MiddlePosition(_model.robot().position(), Direction.west()));
+            } else if(ke.getKeyCode() == KeyEvent.VK_RIGHT) {
+                object = _model.field().getObject(new MiddlePosition(_model.robot().position(), Direction.east()));
+            }
+
+            if (object instanceof Destroyable) _model.robot().makeDamage((Destroyable) object, 1);
+
         } else {
             if(ke.getKeyCode() == KeyEvent.VK_UP) {         // перемещаемся вверх
                 _model.robot().makeMove(Direction.north());
@@ -247,15 +267,13 @@ public class GameFieldPanel extends JPanel implements KeyListener {
             else if(ke.getKeyCode() == KeyEvent.VK_ENTER) { // специальные возможности робота
                 if (_model.robot().getClass() == RobotPainter.class) {
                     ((RobotPainter) _model.robot()).paintCell(_model.robot().position());
-                }
-                else if(_model.robot().getClass() == RobotRadiationMeter.class) {
+                } else if(_model.robot().getClass() == RobotRadiationMeter.class) {
                     RadiationSievert rad =
                             ((RobotRadiationMeter) _model.robot()).measureRadiation(_model.robot().position());
                     if (rad != null)
                         System.out.println(rad.getFormattedRadiation() +
                                 " (" + rad.getEstimateOfRadiationPollution() + ")");
-                }
-                else if(_model.robot().getClass() == RobotTemperatureMeter.class) {
+                } else if(_model.robot().getClass() == RobotTemperatureMeter.class) {
                     TemperatureKelvin temp =
                             ((RobotTemperatureMeter) _model.robot()).measureTemperature(_model.robot().position());
                     if (temp != null) System.out.println(temp.getFormattedTemperature());
