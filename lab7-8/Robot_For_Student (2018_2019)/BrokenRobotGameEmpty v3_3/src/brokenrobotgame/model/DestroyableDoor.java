@@ -30,4 +30,9 @@ public class DestroyableDoor extends Door implements Destroyable {
         durability -= damage;
         if (durability <= 0) destroy();
     }
+
+    @Override
+    public int getDurabilityRest() {
+        return durability;
+    }
 }

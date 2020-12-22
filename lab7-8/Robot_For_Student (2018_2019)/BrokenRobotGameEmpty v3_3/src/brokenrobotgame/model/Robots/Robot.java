@@ -108,7 +108,7 @@ public class Robot extends GameObject<CellPosition> {
     public void makeDamage(Destroyable target, int damage) {
         if (target != null) {
             target.hit(damage);
-            reduceCharge(1);
+            reduceCharge(damage);
             fireRobotAction();
         }
     }

@@ -14,4 +14,10 @@ public interface Destroyable {
      * @param damage урон
      */
     void hit(int damage);
+
+    /** Получить текущую прочность объекта
+     *
+     * @return оставшиеся единицы прочности
+     */
+    int getDurabilityRest();
 }

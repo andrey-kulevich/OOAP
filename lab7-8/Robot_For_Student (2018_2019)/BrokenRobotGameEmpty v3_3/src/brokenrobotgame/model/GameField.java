@@ -6,7 +6,6 @@ import brokenrobotgame.model.quantities.RadiationSievert;
 import brokenrobotgame.model.quantities.TemperatureKelvin;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -90,9 +89,7 @@ public class GameField <TPosition> {
      * @param objType тип объекта
      * @return объекты
      */
-    public ArrayList<GameObject> objects(Class objType) {
-        return (ArrayList<GameObject>) Collections.unmodifiableList(objects.get(objType));
-    }
+    public ArrayList<GameObject> objects(Class objType) { return new ArrayList<>(objects.get(objType)); }
 
     /** Получить объект на заданной позиции
      *
@@ -122,7 +119,7 @@ public class GameField <TPosition> {
      */
     public boolean addObject(GameObject obj) {
         Class objClass = obj.getClass();
-
+        if (obj.position() == null) throw new RuntimeException("Object must have position on field");
         if( objects.containsKey(objClass)) {
             return objects.get(objClass).add(obj);
         } else {
@@ -148,8 +145,8 @@ public class GameField <TPosition> {
 
     /** Очистить поле */
     public void clear() {
-        for(GameObject obj : objects()) obj.unsetField();
         objects.clear();
+        for(GameObject obj : objects()) obj.unsetField();
         _paintedCells.clear();
         _radioPollutionPull.clear();
         _temperatureLevelPull.clear();
